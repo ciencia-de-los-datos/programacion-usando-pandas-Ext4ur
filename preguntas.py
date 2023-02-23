@@ -22,7 +22,10 @@ def pregunta_01():
     40
 
     """
-    return
+
+    df = pd.read_table('tbl0.tsv')
+
+    return len(df)
 
 
 def pregunta_02():
@@ -33,7 +36,10 @@ def pregunta_02():
     4
 
     """
-    return
+
+    df = pd.read_table('tbl0.tsv')
+
+    return len(df.columns)
 
 
 def pregunta_03():
@@ -50,7 +56,10 @@ def pregunta_03():
     Name: _c1, dtype: int64
 
     """
-    return
+
+    df = pd.read_table('tbl0.tsv')
+
+    return df.groupby('_c1')['_c1'].count()
 
 
 def pregunta_04():
@@ -65,7 +74,10 @@ def pregunta_04():
     E    4.785714
     Name: _c2, dtype: float64
     """
-    return
+
+    df = pd.read_table('tbl0.tsv')
+
+    return df.groupby('_c1')['_c2'].mean()
 
 
 def pregunta_05():
@@ -82,7 +94,10 @@ def pregunta_05():
     E    9
     Name: _c2, dtype: int64
     """
-    return
+    
+    df = pd.read_table('tbl0.tsv')
+
+    return df.groupby('_c1')['_c2'].max()
 
 
 def pregunta_06():
@@ -94,7 +109,9 @@ def pregunta_06():
     ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
     """
-    return
+    df = pd.read_table('tbl1.tsv')
+
+    return df['_c4'].drop_duplicates().sort_values().str.upper().to_list()
 
 
 def pregunta_07():
@@ -110,8 +127,10 @@ def pregunta_07():
     E    67
     Name: _c2, dtype: int64
     """
-    return
 
+    df = pd.read_table('tbl0.tsv')
+
+    return df.groupby('_c1')['_c2'].sum()
 
 def pregunta_08():
     """
@@ -128,7 +147,12 @@ def pregunta_08():
     39   39   E    5  1998-01-26    44
 
     """
-    return
+    
+    df = pd.read_table('tbl0.tsv')
+
+    df['suma'] = df['_c0'] + df['_c2']
+
+    return df
 
 
 def pregunta_09():
@@ -146,7 +170,12 @@ def pregunta_09():
     39   39   E    5  1998-01-26  1998
 
     """
-    return
+    
+    df = pd.read_table('tbl0.tsv')
+
+    df['year'] = df['_c3'].str[:4]
+
+    return df
 
 
 def pregunta_10():
@@ -155,16 +184,20 @@ def pregunta_10():
     la columna _c2 para el archivo `tbl0.tsv`.
 
     Rta/
-                                   _c1
-      _c0
+                                   _c2
+      _c1
     0   A              1:1:2:3:6:7:8:9
     1   B                1:3:4:5:6:8:9
     2   C                    0:5:6:7:9
     3   D                  1:2:3:5:5:7
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
-    return
 
+    df = pd.read_table('tbl0.tsv')
+
+    df = df.astype({'_c2': str})
+
+    return df.sort_values(by=['_c1', '_c2']).groupby('_c1')['_c2'].apply(':'.join).to_frame()
 
 def pregunta_11():
     """
@@ -182,7 +215,10 @@ def pregunta_11():
     38   38      d,e
     39   39    a,d,f
     """
-    return
+
+    df = pd.read_table('tbl1.tsv')
+
+    return df.sort_values(by=['_c0', '_c4']).groupby('_c0')['_c4'].apply(','.join).reset_index()
 
 
 def pregunta_12():
@@ -200,8 +236,16 @@ def pregunta_12():
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
     """
-    return
+    
+    df = pd.read_table('tbl2.tsv')
 
+    df = df.astype({'_c5b': str})
+
+    df['_c5'] = df['_c5a'] + ':' + df['_c5b']
+
+    return df.sort_values(by=['_c0', '_c5']).groupby('_c0')['_c5'].apply(','.join).reset_index()
+
+pregunta_12()
 
 def pregunta_13():
     """
@@ -217,4 +261,10 @@ def pregunta_13():
     E    275
     Name: _c5b, dtype: int64
     """
-    return
+    
+    df1 = pd.read_table('tbl0.tsv')
+    df2 = pd.read_table('tbl2.tsv')
+
+    df = pd.merge(df1, df2, on=['_c0'], how='inner')
+
+    return df.groupby('_c1')['_c5b'].sum()
