@@ -197,9 +197,24 @@ def pregunta_10():
 
     df = df.astype({'_c2': str})
 
-    return df.sort_values(by=['_c1', '_c2']).groupby('_c1')['_c2'].apply(':'.join).reset_index()
+    print(pd.DataFrame(
+            {
+                "_c2": [
+                    "1:1:2:3:6:7:8:9",
+                    "1:3:4:5:6:8:9",
+                    "0:5:6:7:9",
+                    "1:2:3:5:5:7",
+                    "1:1:2:3:3:4:5:5:5:6:7:8:8:9",
+                ]
+            },
+            index=pd.Series(["A", "B", "C", "D", "E"], name="_c1"),
+        ))
 
+    a = df.sort_values(by=['_c1', '_c2']).groupby('_c1')['_c2'].apply(':'.join).to_frame()
 
+    return a
+
+print(pregunta_10())
 def pregunta_11():
     """
     Construya una tabla que contenga _c0 y una lista separada por ',' de los valores de
@@ -242,9 +257,9 @@ def pregunta_12():
 
     df = df.astype({'_c5b': str})
 
-    df['concat'] = df['_c5a'] + ':' + df['_c5b']
+    df['_c5'] = df['_c5a'] + ':' + df['_c5b']
 
-    return df.sort_values(by=['_c0', '_c5a']).groupby('_c0')['concat'].apply(','.join).reset_index()
+    return df.sort_values(by=['_c0', '_c5']).groupby('_c0')['concat'].apply(','.join).reset_index()
 
 
 def pregunta_13():
