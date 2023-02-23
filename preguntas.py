@@ -214,7 +214,6 @@ def pregunta_10():
 
     return a
 
-print(pregunta_10())
 def pregunta_11():
     """
     Construya una tabla que contenga _c0 y una lista separada por ',' de los valores de
